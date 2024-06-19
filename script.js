@@ -12,7 +12,10 @@ const reminderList = document.getElementById('reminder-list');
 
 let totalSteps = 0;
 let isWalking = false;
-let lastAcceleration = 0;
+let lastMagnitude = 0;
+const stepThreshold = 1.2; // Adjust this threshold based on the sensitivity you want
+const stepCooldown = 300; // Time in ms to wait before counting another step
+let lastStepTime = 0;
 
 // Steps functionality
 window.addEventListener('devicemotion', (event) => {
@@ -25,19 +28,11 @@ window.addEventListener('devicemotion', (event) => {
   const magnitude = Math.sqrt(x * x + y * y + z * z);
 
   // Check if the user is walking
-  if (magnitude > 2 && magnitude > lastAcceleration) {
-    isWalking = true;
-  } else {
-    isWalking = false;
-  }
-
-  // Update the last acceleration value
-  lastAcceleration = magnitude;
-
-  // Count steps
-  if (isWalking) {
+  const currentTime = new Date().getTime();
+  if (magnitude > stepThreshold && (currentTime - lastStepTime) > stepCooldown) {
     totalSteps++;
     stepsDisplay.textContent = `Total steps: ${totalSteps}`;
+    lastStepTime = currentTime;
   }
 });
 
