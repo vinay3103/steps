@@ -12,6 +12,7 @@ const reminderList = document.getElementById('reminder-list');
 
 let totalSteps = 0;
 let isWalking = false;
+let lastAcceleration = 0;
 
 // Steps functionality
 window.addEventListener('devicemotion', (event) => {
@@ -20,12 +21,18 @@ window.addEventListener('devicemotion', (event) => {
   const y = acceleration.y;
   const z = acceleration.z;
 
-  // Detect walking motion
-  if (Math.abs(x) > 1.5 || Math.abs(y) > 1.5 || Math.abs(z) > 1.5) {
+  // Calculate the magnitude of the acceleration
+  const magnitude = Math.sqrt(x * x + y * y + z * z);
+
+  // Check if the user is walking
+  if (magnitude > 2 && magnitude > lastAcceleration) {
     isWalking = true;
   } else {
     isWalking = false;
   }
+
+  // Update the last acceleration value
+  lastAcceleration = magnitude;
 
   // Count steps
   if (isWalking) {
