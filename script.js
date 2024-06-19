@@ -13,7 +13,7 @@ const reminderList = document.getElementById('reminder-list');
 let totalSteps = 0;
 let isWalking = false;
 let lastMagnitude = 0;
-const stepThreshold = 12; // Adjust this threshold based on the sensitivity you want
+const stepThreshold = 10; // Adjust this threshold based on the sensitivity you want
 const stepCooldown = 300; // Time in ms to wait before counting another step
 let lastStepTime = 0;
 
